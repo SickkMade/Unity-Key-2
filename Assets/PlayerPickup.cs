@@ -25,13 +25,14 @@ public class PlayerPickup : MonoBehaviour
 
     void OnItemActivated(SelectableItem selectableItem){
         selectableItem.SetItemPosition(transform.position);
+        activatedItem.ItemSelected();
     }
 
 
     void Update(){
         Ray ray = new(playerCamera.transform.position, playerCamera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, itemPickupLength, layerToCheck))
+        if (!activatedItem && Physics.Raycast(ray, out RaycastHit raycastHit, itemPickupLength, layerToCheck))
         {
             
             if(raycastHit.collider.gameObject.TryGetComponent<SelectableItem>(out var selectableItem))
@@ -54,7 +55,6 @@ public class PlayerPickup : MonoBehaviour
 
         if(activatedItem != null){
             OnItemActivated(activatedItem);
-            activatedItem.ItemSelected();
 
             if(Input.GetKeyUp(KeyCode.E)){
                 OnItemUnselect(activatedItem);
