@@ -40,6 +40,7 @@ public class PlayerPickup : MonoBehaviour
                 OnItemSelect(selectableItem);
                 if(Input.GetKeyDown(KeyCode.E)){
                     activatedItem = selectableItem;
+                    activatedItem.ItemActivated(transform.position);
                 }
             }
             if(lastHitItem && lastHitItem != selectableItem){

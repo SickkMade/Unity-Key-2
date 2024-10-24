@@ -12,6 +12,8 @@ public class SelectableItem : MonoBehaviour
 
     private Rigidbody rb;
 
+    private float distanceFromPlayer = 1;
+
     void Start(){
         itemRenderer = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
@@ -24,9 +26,12 @@ public class SelectableItem : MonoBehaviour
         }
     }
 
+    public void ItemActivated(Vector3 playerPosition){
+        distanceFromPlayer = Vector3.Distance(playerPosition, transform.position);
+    }
+
     public void SetItemPosition(Vector3 playerPosition){
-        var posDiff = Vector3.Distance(playerPosition, transform.position);
-        transform.position = playerPosition + Camera.main.transform.forward * posDiff;
+        transform.position = playerPosition + Camera.main.transform.forward * distanceFromPlayer;
         rb.velocity = Vector3.zero;
     }
 
