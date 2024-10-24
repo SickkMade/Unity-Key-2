@@ -12,7 +12,8 @@ public class KeyLock : MonoBehaviour
             else{
                 Debug.Log("false");
                 //temp test
-                other.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0,5) * 3, Random.Range(0,5) * 3, Random.Range(0,5) * 3), ForceMode.Impulse);
+                other.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0,5) * 3, Random.Range(0,5) * 3, Random.Range(0,5) * 3), ForceMode.Impulse);
+                other.gameObject.GetComponent<SelectableItem>().isSelected = false;
             }
         }
     }

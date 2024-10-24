@@ -25,7 +25,7 @@ public class PlayerPickup : MonoBehaviour
 
     void OnItemActivated(SelectableItem selectableItem){
         selectableItem.SetItemPosition(transform.position);
-        activatedItem.ItemSelected();
+        // activatedItem.ItemSelected();
     }
 
 
@@ -57,7 +57,7 @@ public class PlayerPickup : MonoBehaviour
         if(activatedItem != null){
             OnItemActivated(activatedItem);
 
-            if(Input.GetKeyUp(KeyCode.E) || activatedItem.isSelected = false){
+            if(Input.GetKeyUp(KeyCode.E) || activatedItem.isSelected == false){
                 OnItemUnselect(activatedItem);
                 activatedItem = null;
             }
