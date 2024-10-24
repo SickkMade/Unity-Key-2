@@ -31,7 +31,7 @@ public class SelectableItem : MonoBehaviour
     }
 
     public void SetItemPosition(Vector3 playerPosition){
-        transform.position = playerPosition + Camera.main.transform.forward * distanceFromPlayer;
+        transform.position = Vector3.Lerp(transform.position, playerPosition + Camera.main.transform.forward * distanceFromPlayer, .3f);
         rb.velocity = Vector3.zero;
     }
 
