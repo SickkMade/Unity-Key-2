@@ -57,7 +57,7 @@ public class PlayerPickup : MonoBehaviour
         if(activatedItem != null){
             OnItemActivated(activatedItem);
 
-            if(Input.GetKeyUp(KeyCode.E)){
+            if(Input.GetKeyUp(KeyCode.E) || activatedItem.isSelected = false){
                 OnItemUnselect(activatedItem);
                 activatedItem = null;
             }
