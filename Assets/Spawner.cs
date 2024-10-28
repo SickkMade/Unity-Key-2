@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
-    GameObject objectToSpawn;
+    List<GameObject> objectToSpawn;
     
     [SerializeField, Range(0, 1000)]
     private int amountToSpawn = 5;
@@ -21,11 +21,11 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnCoroutine(){
         for(int i = 0; i < amountToSpawn; i++){
             yield return new WaitForSeconds(spawnInterval);
-            var key = Instantiate(objectToSpawn, transform);
+            int randomValue = Random.Range(0, objectToSpawn.Count);
+            var key = Instantiate(objectToSpawn[randomValue], transform);
 
             if(i == correctKey){
                 key.GetComponent<KeyInfo>().SetKeyCorrect();
-                key.transform.localScale = new Vector3(2, 2, 2);
             }
         }
     }

@@ -14,55 +14,64 @@ public class PlayerPickup : MonoBehaviour
 
     private SelectableItem lastHitItem;
     private SelectableItem activatedItem;
-    
-    void OnItemSelect(SelectableItem selectableItem){
-        selectableItem.ItemSelected();
-    }
-
-    void OnItemUnselect(SelectableItem selectableItem){
-        selectableItem.ItemUnselected();
-    }
-
-    void OnItemActivated(SelectableItem selectableItem){
-        selectableItem.SetItemPosition(transform.position);
-        // activatedItem.ItemSelected();
-    }
-
 
     void Update(){
-        Ray ray = new(playerCamera.transform.position, playerCamera.transform.forward);
+        if(activatedItem && activatedItem.isHeld){
+            HoldItem();
+        }
+        else{
+            Ray ray = new(playerCamera.transform.position, playerCamera.transform.forward);
+            RaycastForSelection(ray);
+            RaycastForHolding(ray);
+        }
+    }
 
-        if (!activatedItem && Physics.Raycast(ray, out RaycastHit raycastHit, itemPickupLength, layerToCheck))
-        {
-            
+    private void RaycastForHolding(Ray ray){
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, itemPickupLength, layerToCheck)){
             if(raycastHit.collider.gameObject.TryGetComponent<SelectableItem>(out var selectableItem))
             {
-                OnItemSelect(selectableItem);
                 if(Input.GetKeyDown(KeyCode.E)){
                     activatedItem = selectableItem;
-                    activatedItem.ItemActivated(transform.position);
+                    activatedItem.ItemActivated(this.transform.position);
+                    activatedItem.isHeld = true;
                 }
             }
+        }
+        
+    }
+
+    private void HoldItem(){
+        if(Input.GetKeyUp(KeyCode.E)){
+            DropItem();
+        }
+        else{
+            activatedItem.SetItemPosition(this.transform.position);
+        }
+    }
+
+    private void RaycastForSelection(Ray ray){
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, itemPickupLength, layerToCheck))
+        {
+            if(raycastHit.collider.gameObject.TryGetComponent<SelectableItem>(out var selectableItem))
+            {
+                selectableItem.ItemSelected();
+            }
             if(lastHitItem && lastHitItem != selectableItem){
-                OnItemUnselect(lastHitItem);
+                lastHitItem.ItemUnselected();
             }
             lastHitItem = selectableItem;
         } else { //if the raycast does not hit
             if(lastHitItem && lastHitItem.isSelected == true){
-                OnItemUnselect(lastHitItem);
+                lastHitItem.ItemUnselected();
                 lastHitItem = null;
             }
         }
-
-        if(activatedItem != null){
-            OnItemActivated(activatedItem);
-
-            if(Input.GetKeyUp(KeyCode.E) || activatedItem.isSelected == false){
-                OnItemUnselect(activatedItem);
-                activatedItem = null;
-            }
-        }
-
     }
 
+    public void DropItem(){
+        if(!activatedItem) return;
+        activatedItem.isHeld = false;
+        activatedItem.ItemUnselected();
+        activatedItem = null;
+    }
 }

@@ -1,0 +1,1 @@
+These are a set of 10 skeleton type keys to use in any program that can import .3ds files, I have also included the .max (version 8) file for those who want it. They have a metal shader I found a tutorial for online on them. I made them to be used for 3D games and the like, they are all small files so they won't take a large chunk of processor time.

@@ -37,7 +37,7 @@ public class CharacterController : MonoBehaviour
     }
 
     void Update(){
-        isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
+        isGrounded = Physics.CheckSphere(transform.position + (Vector3.down * groundCheckDistance), groundCheckDistance, groundMask);
         if(isGrounded){
             if(Input.GetButtonDown("Jump")){
                 Jump();
@@ -52,8 +52,8 @@ public class CharacterController : MonoBehaviour
        
 
         //walking
-        transform.Translate(Input.GetAxis("Vertical") * speed * Time.deltaTime * Vector3.forward, transform);
-        transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime * Vector3.right, transform);
+        Vector3 movement = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")) * speed;
+        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 
         //left and right rot
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
